@@ -17,7 +17,7 @@ This project is a Rate My Professor AI Assistant that can understand and respond
    - Install the dependencies by running `npm install`.
 4. Configure the environment for running the Python scripts:
    - Create a Python virtual environment by running `python -m venv venv`.
-   - Activate the virtual environment in your terminal by running `source venv/bin/activate`.
+   - Activate the virtual environment in your terminal by running `venv/Scripts/activate` on Windows or `source venv/bin/activate` on macOS and Linux.
    - Install the required Python packages by running `pip install -r requirements.txt`.
    
 ### Running the Next.js App
