@@ -1,0 +1,244 @@
+{
+    "reviews": [
+        {
+            "professor": "Prof1",
+            "review": "Great professor...",
+            "subject": "Math",
+            "stars": 5
+        },
+        {
+            "professor": "Prof2",
+            "review": "Very engaging and knowledgeable.",
+            "subject": "Science",
+            "stars": 4
+        },
+        {
+            "professor": "Prof3",
+            "review": "The lectures were too fast-paced.",
+            "subject": "History",
+            "stars": 3
+        },
+        {
+            "professor": "Prof4",
+            "review": "Amazing at explaining complex topics.",
+            "subject": "Physics",
+            "stars": 5
+        },
+        {
+            "professor": "Prof5",
+            "review": "Could improve on providing feedback.",
+            "subject": "English",
+            "stars": 3
+        },
+        {
+            "professor": "Prof6",
+            "review": "Very supportive and understanding.",
+            "subject": "Biology",
+            "stars": 4
+        },
+        {
+            "professor": "Prof7",
+            "review": "Great class, but the assignments were tough.",
+            "subject": "Chemistry",
+            "stars": 4
+        },
+        {
+            "professor": "Prof8",
+            "review": "Lectures were a bit disorganized.",
+            "subject": "Geography",
+            "stars": 3
+        },
+        {
+            "professor": "Prof9",
+            "review": "Excellent at making the subject interesting.",
+            "subject": "Art",
+            "stars": 5
+        },
+        {
+            "professor": "Prof10",
+            "review": "Very clear and easy to follow.",
+            "subject": "Computer Science",
+            "stars": 4
+        },
+        {
+            "professor": "Prof11",
+            "review": "Not very engaging during lectures.",
+            "subject": "Engineering",
+            "stars": 2
+        },
+        {
+            "professor": "Prof12",
+            "review": "A good mix of theory and practical work.",
+            "subject": "Economics",
+            "stars": 4
+        },
+        {
+            "professor": "Prof13",
+            "review": "Challenging course but worth it.",
+            "subject": "Philosophy",
+            "stars": 4
+        },
+        {
+            "professor": "Prof14",
+            "review": "Very approachable and helpful.",
+            "subject": "Music",
+            "stars": 5
+        },
+        {
+            "professor": "Prof15",
+            "review": "Somewhat difficult to understand at times.",
+            "subject": "Political Science",
+            "stars": 3
+        },
+        {
+            "professor": "Prof16",
+            "review": "Fantastic course material and delivery.",
+            "subject": "Sociology",
+            "stars": 5
+        },
+        {
+            "professor": "Prof17",
+            "review": "Assignments were not always relevant.",
+            "subject": "Business",
+            "stars": 3
+        },
+        {
+            "professor": "Prof18",
+            "review": "Incredible enthusiasm and passion.",
+            "subject": "Drama",
+            "stars": 5
+        },
+        {
+            "professor": "Prof19",
+            "review": "Needs to work on pacing.",
+            "subject": "Statistics",
+            "stars": 3
+        },
+        {
+            "professor": "Prof20",
+            "review": "Very experienced and insightful.",
+            "subject": "Astronomy",
+            "stars": 4
+        },
+        {
+            "professor": "Prof21",
+            "review": "Course was too theoretical and not practical.",
+            "subject": "Mathematics",
+            "stars": 2
+        },
+        {
+            "professor": "Prof22",
+            "review": "Engaging and always available for questions.",
+            "subject": "Literature",
+            "stars": 5
+        },
+        {
+            "professor": "Prof23",
+            "review": "The course material was very dry.",
+            "subject": "Law",
+            "stars": 2
+        },
+        {
+            "professor": "Prof24",
+            "review": "Very knowledgeable but too strict.",
+            "subject": "Psychology",
+            "stars": 3
+        },
+        {
+            "professor": "Prof25",
+            "review": "Great at motivating students.",
+            "subject": "Marketing",
+            "stars": 4
+        },
+        {
+            "professor": "Prof26",
+            "review": "Lacks practical examples.",
+            "subject": "Finance",
+            "stars": 3
+        },
+        {
+            "professor": "Prof27",
+            "review": "Very inspiring and supportive.",
+            "subject": "Education",
+            "stars": 5
+        },
+        {
+            "professor": "Prof28",
+            "review": "A bit monotonous but very thorough.",
+            "subject": "Anthropology",
+            "stars": 3
+        },
+        {
+            "professor": "Prof29",
+            "review": "Very interactive and engaging.",
+            "subject": "Journalism",
+            "stars": 4
+        },
+        {
+            "professor": "Prof30",
+            "review": "Too much emphasis on exams.",
+            "subject": "Medicine",
+            "stars": 3
+        },
+        {
+            "professor": "Prof31",
+            "review": "Brilliant at making complex topics simple.",
+            "subject": "Physics",
+            "stars": 5
+        },
+        {
+            "professor": "Prof32",
+            "review": "Lacks enthusiasm during lectures.",
+            "subject": "History",
+            "stars": 2
+        },
+        {
+            "professor": "Prof33",
+            "review": "Very helpful and approachable.",
+            "subject": "Computer Science",
+            "stars": 4
+        },
+        {
+            "professor": "Prof34",
+            "review": "Assignments were very challenging.",
+            "subject": "Chemistry",
+            "stars": 3
+        },
+        {
+            "professor": "Prof35",
+            "review": "Fantastic at engaging students.",
+            "subject": "Biology",
+            "stars": 5
+        },
+        {
+            "professor": "Prof36",
+            "review": "Course was very well structured.",
+            "subject": "Economics",
+            "stars": 4
+        },
+        {
+            "professor": "Prof37",
+            "review": "Very knowledgeable but hard to follow.",
+            "subject": "Engineering",
+            "stars": 3
+        },
+        {
+            "professor": "Prof38",
+            "review": "Great at providing feedback.",
+            "subject": "English",
+            "stars": 4
+        },
+        {
+            "professor": "Prof39",
+            "review": "Very supportive and understanding.",
+            "subject": "Nursing",
+            "stars": 5
+        },
+        {
+            "professor": "Prof40",
+            "review": "Lectures were very engaging and informative.",
+            "subject": "Sociology",
+            "stars": 4
+        }
+    ]
+}
