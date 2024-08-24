@@ -1,143 +1,85 @@
-'use client';
-import { Box, Button, Stack, TextField } from '@mui/material';
-import { useState } from 'react';
+"use client";
 
-interface Message {
-  role: 'assistant' | 'user';
-  content: string;
-}
+import { useRef } from "react";
+import { HeroWithOrbitingCircles } from "./(components)/Hero2";
+import { FeatureSection } from "./(components)/Features";
+import { MarqueeDemo } from "./(components)/Reviews";
+import { StickyHeader } from "./(components)/Header";
 
 export default function Home() {
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: 'assistant',
-      content: `Hi! I'm the Rate My Professor support assistant. How can I help you today?`,
-    },
-  ]);
-  const [message, setMessage] = useState<string>('');
-
-  const sendMessage = async () => {
-    setMessage('');
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { role: 'user', content: message },
-      { role: 'assistant', content: '' },
-    ]);
-
-    const response = await fetch('/api/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify([...messages, { role: 'user', content: message }]),
-    });
-
-    if (!response.body) {
-      throw new Error('Response body is null');
-    }
-
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder();
-    let result = '';
-
-    const processText = async ({ done, value }: ReadableStreamReadResult<Uint8Array>): Promise<string> => {
-      if (done) {
-        return result;
-      }
-
-      const text = decoder.decode(value || new Uint8Array(), { stream: true });
-      setMessages((prevMessages) => {
-        const lastMessage = prevMessages[prevMessages.length - 1];
-        const otherMessages = prevMessages.slice(0, prevMessages.length - 1);
-        return [
-          ...otherMessages,
-          { ...lastMessage, content: lastMessage.content + text },
-        ];
-      });
-      return reader.read().then(processText);
-    };
-
-    await reader.read().then(processText);
-  };
+  const containerRef = useRef(null);
 
   return (
-    <Box
-      width="100vw"
-      height="100vh"
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
+    <main
+      ref={containerRef}
+      className=" bg-black h-full w-full overflow-y-auto"
     >
-      <Stack
-        direction={'column'}
-        width="500px"
-        height="700px"
-        border="1px solid black"
-        p={2}
-        spacing={3}
-      >
-        <Stack
-          direction={'column'}
-          spacing={2}
-          flexGrow={1}
-          overflow="auto"
-          maxHeight="100%"
+      <StickyHeader containerRef={containerRef} />
+      <HeroWithOrbitingCircles />
+      <div className="flex justify-center items-center w-full px-4">
+        <div className="max-w-screen-lg w-full" id="features">
+          <FeatureSection />
+        </div>
+      </div>
+      <div className="flex justify-center items-center w-full px-4">
+        <div className="max-w-screen-lg w-full" id="reviews">
+          <MarqueeDemo />
+        </div>
+      </div>
+      <div>
+        <section
+          id="clients"
+          className="text-center mx-auto max-w-[80rem] px-6 md:px-8"
         >
-          {messages.map((message, index) => (
-            <Box
-              key={index}
-              display="flex"
-              justifyContent={
-                message.role === 'assistant' ? 'flex-start' : 'flex-end'
-              }
-            >
-              <Box
-                bgcolor={
-                  message.role === 'assistant'
-                    ? 'primary.main'
-                    : 'secondary.main'
-                }
-                color="white"
-                borderRadius={16}
-                p={3}
-              >
-                {message.content}
-              </Box>
-            </Box>
-          ))}
-        </Stack>
-        <Stack direction={'row'} spacing={2}>
-          <TextField
-            label="Message"
-            fullWidth
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            InputProps={{
-              style: {
-                color: 'white', // Change the text color to white
-              },
-            }}
-            sx={{
-              '& .MuiInputLabel-root': { color: 'white' }, // Change label color to white
-              '& .MuiOutlinedInput-root': {
-                '& fieldset': {
-                  borderColor: 'white', // Change border color to white
-                },
-                '&:hover fieldset': {
-                  borderColor: 'white', // Change border color to white on hover
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: 'white', // Change border color to white when focused
-                },
-              }
-            }}
-          />
-          <Button variant="contained" onClick={sendMessage}>
-            Send
-          </Button>
-        </Stack>
-      </Stack>
-    </Box>
+          <div className="py-14">
+            <div className="mx-auto max-w-screen-xl px-4 md:px-8">
+              <h2 className="text-center text-2xl font-bold     text-white">
+                MEET OUR TEAM
+              </h2>
+              <div className="mt-6">
+                <ul className="flex flex-wrap items-center justify-center gap-x-10 gap-y-6 md:gap-x-16">
+                  <li className="flex flex-col items-center">
+                    <img
+                      src="/images/member_jorgeandrespadilla.jpeg"
+                      alt="Jorge Andres Padilla"
+                      className="h-24 w-24 rounded-full object-cover"
+                    />
+                    <p className="mt-2 text-center text-sm font-medium text-white">Jorge Andres Padilla</p>
+                  </li>
+                  <li className="flex flex-col items-center">
+                    <img
+                      src="/images/member_gabrielapadilla.jpeg"
+                      alt="Gabriela Padilla"
+                      className="h-24 w-24 rounded-full object-cover"
+                    />
+                    <p className="mt-2 text-center text-sm font-medium text-white">Gabriela Padilla</p>
+                  </li>
+                  <li className="flex flex-col items-center">
+                    <img
+                      src="/images/member_jennifermena.jpeg"
+                      alt="Jennifer Mena"
+                      className="h-24 w-24 rounded-full object-cover"
+                    />
+                    <p className="mt-2 text-center text-sm font-medium text-white">Jennifer Mena</p>
+                  </li>
+                  <li className="flex flex-col items-center">
+                    <img
+                      src="/images/member_guleednuh.jpeg"
+                      alt="Guleed Nuh"
+                      className="h-24 w-24 rounded-full object-cover"
+                    />
+                    <p className="mt-2 text-center text-sm font-medium text-white">Guleed Nuh</p>
+                  </li>
+                </ul>
+              </div>
+              <br />
+              <br />
+            </div>
+          </div>
+        </section>
+      </div>
+
+
+    </main>
   );
 }
