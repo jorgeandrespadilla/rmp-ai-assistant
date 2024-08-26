@@ -1,6 +1,6 @@
 # AI Rate My Professor
 
-This project is a Rate My Professor AI Assistant that can understand and respond to complex queries about professors and courses. This app was built using Next.js, TypeScript, Python, Firebase, OpenAI and Pinecone.
+This project is a Rate My Professor AI Assistant that can understand and respond to complex queries about professors and courses. This app was built using Next.js, TypeScript, Python, PostgreSQL, OpenAI and Pinecone.
 
 ## Getting Started
 
