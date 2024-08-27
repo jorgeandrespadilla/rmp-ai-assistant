@@ -15,6 +15,8 @@ This project is a Rate My Professor AI Assistant that can understand and respond
 2. Create a copy of the `.env.local.example` file and rename it to `.env.local`. Fill in the environment variables with your Firebase project configuration.
 3. Configure the environment for running the Next.js app:
    - Install the dependencies by running `npm install`.
+   - Generate Prisma Client by running `npm run db:generate`.
+   - If you are working in a development environment, follow the instructions in the [Database Migrations (Local Environment)](#database-migrations-local-environment) section.
 4. Configure the environment for running the Python scripts:
    - Create a Python virtual environment by running `python -m venv venv`.
    - Activate the virtual environment in your terminal by running `venv/Scripts/activate` on Windows or `source venv/bin/activate` on macOS and Linux.
