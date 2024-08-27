@@ -6,15 +6,15 @@ interface QueryReviewData {
   content: string;
   reviewId: number;
   professorId: number;
-  subjectId?: number;
+  subjectId: number;
 }
 
-interface AddReviewData {
+export interface AddReviewData {
   id: string;
   content: string;
   reviewId: number;
   professorId: number;
-  subjectId?: number;
+  subjectId: number;
 }
 
 interface AddReviewVector {
@@ -24,7 +24,7 @@ interface AddReviewVector {
     content: string;
     reviewId: number;
     professorId: number;
-    subjectId?: number;
+    subjectId: number;
   }
 }
 

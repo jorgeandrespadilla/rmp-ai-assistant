@@ -1,23 +1,25 @@
 import { Cheerio, CheerioAPI, load } from "cheerio"
 import { AnyNode, Element } from 'domhandler'
 
-interface ProfessorData {
+export interface SchoolData {
   name: string
-  school: {
-    name: string
-    rmpUrl: string
-  } | null
+  rmpUrl: string
 }
 
-interface ReviewRatings {
+export interface ProfessorData {
+  name: string
+  school: SchoolData | null
+}
+
+export interface ReviewRatings {
   qualityRating: number
   difficultyRating: number
 }
 
-interface ReviewData extends ReviewRatings {
+export interface ReviewData extends ReviewRatings {
+  content: string
   subjectName: string
   publishedAt: Date
-  content: string
 }
 
 interface ScrapedResult {
