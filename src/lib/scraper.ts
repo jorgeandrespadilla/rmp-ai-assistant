@@ -177,7 +177,7 @@ const retrieveReviews = ($: CheerioAPI, reviewListElement: Cheerio<Element>) => 
 // #endregion
 
 
-const scrapeProfessorReviews = async (url: string): Promise<ScrapedResult> => {
+export const scrapeProfessorReviews = async (url: string): Promise<ScrapedResult> => {
   // Check if the URL is valid
   if (!isValidURL(url)) {
     throw new Error("Invalid URL")
