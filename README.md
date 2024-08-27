@@ -8,6 +8,9 @@ This project is a Rate My Professor AI Assistant that can understand and respond
 
 - Node.js 20 or higher
 - Python 3.10 or higher
+- OpenAI API key
+- Pinecone API key with a Pinecone index configured for `text-embedding-3-small`
+- PostgreSQL 15 or higher with a database created for the project
 
 ### Installation
 
