@@ -128,6 +128,8 @@ export async function POST(req: Request) {
       scrapedData: scrapedResult
     }, { status: 200 });
   } catch (error) {
-    return new Response((error as Error).message, { status: 400 });
+    return Response.json({
+      error: { message: (error as Error).message }
+    }, { status: 400 });
   }
 }
