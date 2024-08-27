@@ -1,6 +1,12 @@
 import { NextResponse } from 'next/server';
-import { Pinecone } from '@pinecone-database/pinecone';
+import { queryReviewsFromIndex } from '@/lib/vector-store';
+import prisma from '@/lib/db';
 import OpenAI from 'openai';
+
+interface ChatMessage {
+    role: 'system' | 'user' | 'assistant';
+    content: string;
+}
 
 const systemPrompt = `
 You are a rate my professor agent to help students find classes, that takes in user questions and answers them.
@@ -10,51 +16,42 @@ Use them to answer the question if needed.
 
 export async function POST(req: Request) {
     const data = await req.json();
+    const lastMessage: ChatMessage = data[data.length - 1];
 
-    const pc = new Pinecone({
-        apiKey: process.env.PINECONE_API_KEY!,
-    });
-    const index = pc.index(process.env.PINECONE_INDEX_NAME!).namespace('ns1');
-    const openai = new OpenAI();
-
-    const text = data[data.length - 1].content;
-    const embedding = await openai.embeddings.create({
-        model: 'text-embedding-3-small',
-        input: text,
-        encoding_format: 'float',
-    });
-
-    const results = await index.query({
-        topK: 5,
-        includeMetadata: true,
-        vector: embedding.data[0].embedding,
+    const indexResults = await queryReviewsFromIndex(lastMessage.content);
+    const resultReviewIds = indexResults.map((match) => match.reviewId);
+    
+    const dbResults = await prisma.review.findMany({
+        where: {
+          id: {
+            in: resultReviewIds,
+          }
+        },
+        include: {
+          professor: true,
+          subject: true,
+        }
     });
 
     let resultString = '';
-    results.matches.forEach((match) => {
-        const professorId = match.id;
-        const metadata = match.metadata || {};
-
-        const review = metadata.review || 'No review available';
-        const subject = metadata.subject || 'Unknown';
-        const stars = metadata.stars || 'N/A';
-
+    dbResults.forEach((match) => {
         resultString += `
         Returned Results:
-        Professor: ${professorId}
-        Review: ${review}
-        Subject: ${subject}
-        Stars: ${stars}
+        Professor: ${match.professor.name}
+        Review: ${match.content}
+        Subject: ${match.subject.name}
+        Quality Rating: ${match.qualityRating}
+        Difficulty Rating: ${match.difficultyRating}
         \n\n`;
     });
 
-    const lastMessage = data[data.length - 1];
     const lastMessageContent = lastMessage.content + resultString;
     const lastDataWithoutLastMessage = data.slice(0, data.length - 1).map((msg: any) => ({
         role: msg.role as 'system' | 'user' | 'assistant',
         content: msg.content,
     }));
 
+    const openai = new OpenAI();
     const completion = await openai.chat.completions.create({
         messages: [
           { role: 'system', content: systemPrompt },
