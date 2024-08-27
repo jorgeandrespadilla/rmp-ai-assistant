@@ -33,6 +33,18 @@ To run the Python scripts, you need to activate the virtual environment by runni
 1. RAG Ingestion Script: This script ingests the Rate My Professor reviews into Pinecone.
    - Run the script by running `python scripts/rag_ingestion.py`.
 
+## Working with the Database
+
+This project uses Prisma as an ORM to interact with the PostgreSQL database. Prisma Client is used to access the database in the Next.js app, and Prisma Migrate is used to manage the database schema.
+
+To easily interact with the database through a GUI, you can use Prisma Studio. To start Prisma Studio, run the following command:
+
+```bash
+npm run db:studio
+```
+
+This command will open Prisma Studio in your default browser. You can use Prisma Studio to view and edit the data in your database.
+
 ## Database Migrations (Local Environment)
 
 > We need to use `dotenv-cli` to load environment variables from the `.env.local` file instead of the default `.env` file used by Prisma. This is already configured in the NPM scripts.
