@@ -1,9 +1,29 @@
+import { createInterface } from "readline"
 import { load } from "cheerio"
 
 // #region Helpers
 
+const RMP_BASE_URL = "https://www.ratemyprofessors.com"
+
+const isValidURL = (url) => {
+  if (!url) {
+    return false
+  }
+  try {
+    new URL(url)
+    return true
+  }
+  catch (error) {
+    return false
+  }
+}
+
 const getPageHTML = async (url) => {
   const resp = await fetch(url)
+  // Check if the request was successful
+  if (!resp.ok) {
+    throw new Error(`Failed to fetch page: ${resp.statusText}`)
+  }
   return await resp.text()
 }
 
@@ -44,7 +64,7 @@ const parseProfessorInfo = ($, teacherElement) => {
     school: schoolElement
       ? ({
         name: $(schoolElement).text().trim(),
-        rmpUrl: `https://www.ratemyprofessors.com${$(schoolElement).attr('href')}`,
+        rmpUrl: `${RMP_BASE_URL}${$(schoolElement).attr('href')}`,
       })
       : null
   }
@@ -134,6 +154,14 @@ const retrieveReviews = ($, reviewListElement) => {
 
 
 const scrapeProfessorReviews = async (url) => {
+  // Check if the URL is valid
+  if (!isValidURL(url)) {
+    throw new Error("Invalid URL")
+  }
+  if (!url.startsWith(`${RMP_BASE_URL}/professor/`)) {
+    throw new Error("Invalid Rate My Professor URL: Only professor URLs are supported")
+  }
+
   const html = await getPageHTML(url)
   const $ = load(html)
 
@@ -153,14 +181,19 @@ const scrapeProfessorReviews = async (url) => {
   }
 }
 
-const main = async () => {
+const readline = createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+const promptMessage = 'Enter a Rate My Professor URL to scrape (e.g. https://www.ratemyprofessors.com/professor/1)'
+readline.question(`${promptMessage}\n> `, async (url) => {
   try {
-    const data = await scrapeProfessorReviews("https://www.ratemyprofessors.com/professor/1")
+    const data = await scrapeProfessorReviews(url)
     console.log("Reviews found:", data.reviews.length)
     console.log(data)
   } catch (error) {
-    console.error(error)
+    console.log("Error:", error.message)
   }
-}
-
-main()
+  readline.close();
+});
