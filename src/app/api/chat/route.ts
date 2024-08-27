@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     const pc = new Pinecone({
         apiKey: process.env.PINECONE_API_KEY!,
     });
-    const index = pc.index('rag').namespace('ns1');
+    const index = pc.index(process.env.PINECONE_INDEX_NAME!).namespace('ns1');
     const openai = new OpenAI();
 
     const text = data[data.length - 1].content;
