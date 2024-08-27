@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model School {
+  id         Int         @id @default(autoincrement())
+  name       String
+  rmpUrl     String?
+  professors Professor[]
+
+  @@map("schools")
+}
+
+model Subject {
+  id      Int      @id @default(autoincrement())
+  name    String
+  reviews Review[]
+
+  @@map("subjects")
+}
+
+model Professor {
+  id       Int      @id @default(autoincrement())
+  name     String
+  rmpUrl   String?
+  schoolId Int?
+  school   School?  @relation(fields: [schoolId], references: [id])
+  reviews  Review[]
+
+  @@map("professors")
+}
+
+model Review {
+  id               Int        @id @default(autoincrement())
+  professorId      Int
+  professor        Professor  @relation(fields: [professorId], references: [id])
+  subjectId        Int
+  subject          Subject    @relation(fields: [subjectId], references: [id])
+  content          String
+  qualityRating    Int
+  difficultyRating Int
+  sentiment        Sentiment?
+  publishedAt      DateTime
+
+  @@map("reviews")
+}
+
+enum Sentiment {
+  POSITIVE
+  NEUTRAL
+  NEGATIVE
+}

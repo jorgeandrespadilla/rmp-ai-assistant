@@ -6,7 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:generate": "npx prisma generate",
+    "db:studio": "npx dotenv -e .env.local -- npx prisma studio",
+    "db:prototype:push": "npx dotenv -e .env.local -- npx prisma db push",
+    "db:prototype:reset": "npx dotenv -e .env.local -- npx prisma db reset --force",
+    "db:migrate:dev": "npx dotenv -e .env.local -- npx prisma migrate dev",
+    "db:migrate:deploy": "npx dotenv -e .env.local -- npx prisma migrate deploy"
   },
   "dependencies": {
     "@clerk/nextjs": "^5.3.3",
@@ -14,6 +20,7 @@
     "@emotion/styled": "^11.13.0",
     "@mui/material": "^5.16.7",
     "@pinecone-database/pinecone": "^3.0.1",
+    "@prisma/client": "^5.18.0",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@vercel/analytics": "^1.3.1",
@@ -34,9 +41,11 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "dotenv-cli": "^7.4.2",
     "eslint": "^8",
     "eslint-config-next": "14.2.6",
     "postcss": "^8",
+    "prisma": "^5.18.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
   }

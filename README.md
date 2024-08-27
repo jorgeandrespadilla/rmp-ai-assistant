@@ -1,6 +1,6 @@
 # AI Rate My Professor
 
-This project is a Rate My Professor AI Assistant that can understand and respond to complex queries about professors and courses. This app was built using Next.js, TypeScript, Python, Firebase, OpenAI and Pinecone.
+This project is a Rate My Professor AI Assistant that can understand and respond to complex queries about professors and courses. This app was built using Next.js, TypeScript, Python, PostgreSQL, OpenAI and Pinecone.
 
 ## Getting Started
 
@@ -15,6 +15,8 @@ This project is a Rate My Professor AI Assistant that can understand and respond
 2. Create a copy of the `.env.local.example` file and rename it to `.env.local`. Fill in the environment variables with your Firebase project configuration.
 3. Configure the environment for running the Next.js app:
    - Install the dependencies by running `npm install`.
+   - Generate Prisma Client by running `npm run db:generate`.
+   - If you are working in a development environment, follow the instructions in the [Database Migrations (Local Environment)](#database-migrations-local-environment) section.
 4. Configure the environment for running the Python scripts:
    - Create a Python virtual environment by running `python -m venv venv`.
    - Activate the virtual environment in your terminal by running `venv/Scripts/activate` on Windows or `source venv/bin/activate` on macOS and Linux.
@@ -30,6 +32,120 @@ To run the Python scripts, you need to activate the virtual environment by runni
 
 1. RAG Ingestion Script: This script ingests the Rate My Professor reviews into Pinecone.
    - Run the script by running `python scripts/rag_ingestion.py`.
+
+## Working with the Database
+
+This project uses Prisma as an ORM to interact with the PostgreSQL database. Prisma Client is used to access the database in the Next.js app, and Prisma Migrate is used to manage the database schema.
+
+To easily interact with the database through a GUI, you can use Prisma Studio. To start Prisma Studio, run the following command:
+
+```bash
+npm run db:studio
+```
+
+This command will open Prisma Studio in your default browser. You can use Prisma Studio to view and edit the data in your database.
+
+## Database Migrations (Local Environment)
+
+> We need to use `dotenv-cli` to load environment variables from the `.env.local` file instead of the default `.env` file used by Prisma. This is already configured in the NPM scripts.
+
+The following commands should only be used in a development environment because they can cause data loss. Do not run these commands in production.
+
+### Creating a Database	with Docker
+
+To create a PostgreSQL database using Docker, you can use the following command:
+
+```bash
+docker run --name ai-rmp -e POSTGRES_PASSWORD=mysecretpassword -p 5432:5432 -d postgres
+```
+
+Replace `mysecretpassword` with your desired password. To generate a random password, you can use the following command with Node.js:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(16).toString('base64url'))"
+```
+
+Or with Python:
+
+```bash
+python -c "import secrets; print(secrets.token_urlsafe(16))"
+```
+
+> The default username is `postgres` (you can change this by adding the `-e POSTGRES_USER=myusername` flag). 
+
+To stop the container, you can use the following command:
+
+```bash
+docker stop ai-rmp
+```
+
+To remove the container, you can use the following command:
+
+```bash
+docker rm ai-rmp
+```
+
+### Experiment with the Database
+
+To easily prototype the database, you can use the following command to apply the changes to the database schema, without creating a migration:
+
+```bash
+npm run db:prototype:push
+```
+
+> With this command you can continue to iterate on your Prisma schema until you are ready to create a migration.
+
+### Reset the Database
+
+To reset the database, you can use the following command:
+
+```bash
+npm run db:prototype:reset
+```
+
+### Creating Migrations
+
+> Any step taken to prototype the database are not preserved - `db:push` does not generate a history.
+
+To create a new migration, run the following command:
+
+```bash
+npm run db:migrate:dev -- --name <migration-name>
+```
+
+> Replace `<migration-name>` with the name of the migration using snake_case format (e.g. `init-db`). We strongly recommend using the following format: `[action]-[table]-[description]` (e.g. `create-professors-table`). 
+
+This command does three things:
+
+1. Create a new SQL migration file for this migration in the `prisma/migrations` directory.
+2. Execute the SQL migration file against the database.
+3. Run `prisma generate` under the hood (which installed the @prisma/client package and generated a tailored Prisma Client API based on your models).
+
+### Applying Migrations
+
+To apply the migrations, use the following command:
+
+```bash
+npm run db:migrate:dev
+```
+
+### Common Issues
+
+To work with migrations when developing your application in a team, see the recommended [Team Development Workflow](https://www.prisma.io/docs/orm/prisma-migrate/workflows/team-development).
+
+To customize migrations and avoid data loss when renaming fields or tables, see the [Customizing Migrations](https://www.prisma.io/docs/orm/prisma-migrate/workflows/customizing-migrations) documentation.
+
+## Database Migrations (Production)
+
+### Deploying Migrations
+
+In production and testing environments, use the following command to apply migrations:
+
+```bash
+npm run db:migrate:deploy
+```
+
+> **Note:** migrate deploy should generally be part of an automated CI/CD pipeline, and we do not recommend running this command locally to deploy changes to a production database.
 
 ## Deploy on Vercel
 
