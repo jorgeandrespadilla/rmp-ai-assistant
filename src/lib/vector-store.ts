@@ -3,16 +3,18 @@ import OpenAI from "openai";
 
 interface QueryReviewData {
   id: string;
-  professorId: string;
-  subjectId?: string;
   content: string;
+  reviewId: number;
+  professorId: number;
+  subjectId?: number;
 }
 
 interface AddReviewData {
   id: string;
   content: string;
-  professorId: string;
-  subjectId?: string;
+  reviewId: number;
+  professorId: number;
+  subjectId?: number;
 }
 
 interface AddReviewVector {
@@ -20,8 +22,9 @@ interface AddReviewVector {
   values: number[];
   metadata: {
     content: string;
-    professorId: string;
-    subjectId?: string;
+    reviewId: number;
+    professorId: number;
+    subjectId?: number;
   }
 }
 
@@ -39,7 +42,7 @@ export const queryReviewsFromIndex = async (query: string, topK: number = 5): Pr
   });
 
   const results = await index.query({
-    topK: 5,
+    topK: topK,
     includeMetadata: true,
     vector: embedding.data[0].embedding,
   });
@@ -48,35 +51,40 @@ export const queryReviewsFromIndex = async (query: string, topK: number = 5): Pr
     const metadata = match.metadata || {};
     return {
       id: match.id,
-      professorId: metadata.professorId.toString(),
-      subjectId: metadata.subjectId?.toString(),
       content: metadata.content.toString(),
+      reviewId: metadata.reviewId as number,
+      professorId: metadata.professorId as number,
+      subjectId: metadata.subjectId as number,
     } satisfies QueryReviewData;
   });
 }
 
-export const addReviewsToIndex = async (review: AddReviewData) => {
+export const addReviewsToIndex = async (reviews: AddReviewData[]) => {
   const pc = new Pinecone({
     apiKey: process.env.PINECONE_API_KEY!,
   });
   const index = pc.index(process.env.PINECONE_INDEX_NAME!).namespace('ns1');
 
   const openai = new OpenAI();
-  const embedding = await openai.embeddings.create({
-    model: 'text-embedding-3-small',
-    input: review.content,
-    encoding_format: 'float',
-  });
+  const vectors: AddReviewVector[] = []
+  
+  for (const review of reviews) {
+    const embedding = await openai.embeddings.create({
+      model: 'text-embedding-3-small',
+      input: review.content,
+      encoding_format: 'float',
+    });
+    vectors.push({
+      id: review.id,
+      values: embedding.data[0].embedding,
+      metadata: {
+        content: review.content,
+        reviewId: review.reviewId,
+        professorId: review.professorId,
+        subjectId: review.subjectId,
+      }
+    });
+  }
 
-  const vector: AddReviewVector = {
-    id: review.id,
-    values: embedding.data[0].embedding,
-    metadata: {
-      content: review.content,
-      professorId: review.professorId,
-      subjectId: review.subjectId,
-    }
-  };
-
-  await index.upsert([vector]);
+  await index.upsert(vectors);
 }
