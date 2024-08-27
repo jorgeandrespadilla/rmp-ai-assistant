@@ -43,7 +43,7 @@ To easily interact with the database through a GUI, you can use Prisma Studio. T
 npm run db:studio
 ```
 
-This command will open Prisma Studio in your default browser. You can use Prisma Studio to view and edit the data in your database.
+This command will open Prisma Studio in your default browser. You can use Prisma Studio to view and edit the data in your database. See the [Prisma Studio](https://www.prisma.io/docs/orm/tools/prisma-studio) documentation for more information.
 
 ## Database Migrations (Local Environment)
 
