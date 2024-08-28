@@ -19,7 +19,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import { ReviewStatsData } from "@/app/api/stats/route"
-import { sentimentCategoriesConfig } from "./constants"
+import { sentimentCategoriesConfig } from "../constants"
 
 type SentimentCategory = keyof typeof sentimentCategoriesConfig
 

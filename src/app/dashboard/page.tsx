@@ -7,6 +7,9 @@ import { SentimentLinearChart } from "./_charts/sentiment-linear-chart";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import { ReviewStatsData } from "../api/stats/route";
+import { ReviewData } from "../api/reviews/route";
+import { Separator } from "@/components/ui/separator";
+import { sentimentCategoriesConfig } from "./constants";
 
 interface Professor {
   slug: string;
@@ -25,12 +28,49 @@ const getStats = async (professorSlug: string, timeRange: string) => {
   return data.stats as ReviewStatsData;
 }
 
+const getReviews = async (professorSlug: string, timeRange: string) => {
+  const response = await fetch(`/api/reviews?professor=${professorSlug}&timeRange=${timeRange}`);
+  const data = await response.json();
+  return data.reviews as ReviewData[];
+}
+
+function ReviewCard({ review }: { review: ReviewData }) {
+  return (
+    <div className="flex flex-col bg-gray-800 rounded-lg p-4">
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-bold text-white">{review.subject?.name ?? "N/A"}</h3>
+        <span className="text-sm text-gray-400">{review.publishedAt}</span>
+      </div>
+      <div className="flex items-center gap-2 mt-2">
+        <span className="text-sm text-gray-400">
+          Quality:
+          <span className="text-white ml-1">{review.qualityRating}</span>
+        </span>
+        <Separator orientation="vertical" className="h-4 bg-slate-500" />
+        <span className="text-sm text-gray-400">
+          Difficulty:
+          <span className="text-white ml-1">{review.difficultyRating}</span>
+        </span>
+        <Separator orientation="vertical" className="h-4 bg-slate-500" />
+        <div className="flex items-center gap-1">
+          <span className="text-sm text-gray-400">Sentiment: </span>
+          <span className="text-sm" style={{ color: sentimentCategoriesConfig[review.sentiment].color }}>
+            {sentimentCategoriesConfig[review.sentiment].label}
+          </span>
+        </div>
+      </div>
+      <p className="text-sm text-white mt-4">{review.content}</p>
+    </div>
+  );
+}
+
 export default function Home() {
   const containerRef = useRef(null);
   const [professors, setProfessors] = useState<Professor[]>([]);
   const [selectedProfessor, setSelectedProfessor] = useState<string>(""); // Slug
   const [timeRange, setTimeRange] = useState<string>("all");
   const [stats, setStats] = useState<ReviewStatsData | null>(null);
+  const [reviews, setReviews] = useState<ReviewData[] | null>(null);
 
   useEffect(() => {
     getProfessors()
@@ -48,6 +88,12 @@ export default function Home() {
         .catch(err => {
           console.error(err);
           toast.error("Failed to fetch stats. Please try again later.");
+        });
+      getReviews(selectedProfessor, timeRange)
+        .then(setReviews)
+        .catch(err => {
+          console.error(err);
+          toast.error("Failed to fetch reviews. Please try again later.");
         });
     }
   }, [selectedProfessor, timeRange]);
@@ -110,16 +156,36 @@ export default function Home() {
           {
             stats === null
               ? (
-                <div className="text-white text-lg mt-4">Select a professor to view stats</div>
+                <div className="text-white text-lg mt-4">Select a professor to view stats & reviews</div>
               )
               : (
                 <div className="grid grid-cols-1 gap-8 md:grid-cols-3 w-full max-w-4xl">
-                  <div className="col-span-2">
+                  <div className="md:col-span-2">
                     <SentimentLinearChart data={stats.linear} />
                   </div>
                   <SentimentPieChart data={stats.pie} />
                 </div>
               )
+          }
+
+          {
+            reviews && (
+              <div className="flex flex-col w-full max-w-4xl m-8">
+                <h2 className="text-2xl font-bold text-white">Reviews</h2>
+                <div className="grid grid-cols-1 gap-4 mt-4">
+                  {
+                    reviews.length === 0 && (
+                      <div className="text-white text-lg text-center mt-4">No reviews found for the current professor</div>
+                    )
+                  }
+                  {
+                    reviews.map((review) => (
+                      <ReviewCard key={review.publishedAt} review={review} />
+                    ))
+                  }
+                </div>
+              </div>
+            )
           }
         </div>
 

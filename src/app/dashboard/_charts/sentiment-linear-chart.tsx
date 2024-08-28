@@ -18,7 +18,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import { sentimentCategoriesConfig } from "./constants"
+import { sentimentCategoriesConfig } from "../constants"
 import { ReviewStatsData } from "@/app/api/stats/route"
 
 const chartConfig = {
