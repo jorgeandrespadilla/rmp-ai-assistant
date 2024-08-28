@@ -39,10 +39,10 @@ export function HeroWithOrbitingCircles() {
 
     return (
         <div className="relative flex h-[600px] w-full flex-col items-center justify-center overflow-hidden rounded-lg bg-background md:shadow-xl pb-20">
-            <span className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-300 bg-clip-text text-center text-8xl font-semibold leading-none text-transparent dark:from-white dark:to-black">
+            <span className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b bg-clip-text text-center text-8xl font-semibold leading-none text-transparent from-white to-black">
                 <motion.h1
                     ref={fadeInRef}
-                    className="text-balance bg-gradient-to-br from-black from-30% to-black/60 bg-clip-text py-6 text-4xl font-medium leading-none tracking-tighter text-transparent dark:from-white dark:to-white/40 sm:text-6xl md:text-6xl lg:text-8xl"
+                    className="text-balance bg-gradient-to-br from-30% bg-clip-text py-6 text-4xl font-medium leading-none tracking-tighter text-transparent from-white to-white/40 sm:text-6xl md:text-6xl lg:text-8xl"
                     animate={fadeInInView ? "animate" : "initial"}
                     variants={fadeUpVariants}
                     initial={false}
