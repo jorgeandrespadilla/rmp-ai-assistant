@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactMarkdown from 'react-markdown';
 import { cn } from "@/lib/utils";
 
 interface Item {
@@ -42,9 +43,11 @@ const ChatNotification = ({ name, description, icon, color, time }: Item) => {
               )}
             </figcaption>
           )}
-          <p className="text-sm font-normal dark:text-white/60">
+          <ReactMarkdown className="text-sm font-normal dark:text-white/60" components={{
+            hr: () => <hr className="my-2 border-gray-200 dark:border-gray-500" />,
+          }}>
             {description}
-          </p>
+          </ReactMarkdown>
         </div>
       </div>
     </figure>

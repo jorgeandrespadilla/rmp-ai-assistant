@@ -11,7 +11,7 @@ interface ChatMessage {
 const systemPrompt = `
 You are a rate my professor agent to help students find classes, that takes in user questions and answers them.
 For every user question, the top 3 professors that match the user question are returned.
-Use them to answer the question if needed.
+Use them to answer the question if needed. Don't invent fake professors. Just use the information you have. If you don't have the information, just say so. Always be helpful and polite. Use markdown to format your responses. Always delimit each review so that the user can easily read them.
 `;
 
 export async function POST(req: Request) {
@@ -33,16 +33,16 @@ export async function POST(req: Request) {
         }
     });
 
-    let resultString = '';
+    let resultString = 'Similar Results:';
     dbResults.forEach((match) => {
         resultString += `
-        Returned Results:
+        \n\n
         Professor: ${match.professor.name}
-        Review: ${match.content}
         Subject: ${match.subject.name}
+        Review: ${match.content}
         Quality Rating: ${match.qualityRating}
         Difficulty Rating: ${match.difficultyRating}
-        \n\n`;
+        `;
     });
 
     const lastMessageContent = lastMessage.content + resultString;

@@ -168,7 +168,11 @@ export default function Home() {
                   transition={{ type: "spring", stiffness: 350, damping: 40 }}
                 >
                   <ChatNotification
-                    description={msg.content}
+                    description={
+                      msg.role === 'assistant' && !msg.content 
+                        ? 'Thinking...' 
+                        : msg.content 
+                    }
                     color={msg.role === 'assistant' ? '#00C9A7' : '#FFB800'}
                     icon={msg.role === 'assistant' ? '🤖' : '👤'}
                   />
@@ -200,18 +204,18 @@ export default function Home() {
         </Stack>
       </Box>
       {/*Section - Input for Web Scraping */}
-      <div className="mb-10 w-1/2 p-6 bg-white/80 rounded-lg backdrop-blur-md flex flex-col justify-center items-center shadow-lg overflow-y-auto mx-auto my-auto">
+      <div className="mb-10 w-1/2 p-6 [box-shadow:0_0_0_1px_rgba(0,0,0,.1),0_2px_4px_rgba(0,0,0,.1),0_12px_24px_rgba(0,0,0,.1)] transform-gpu dark:bg-transparent dark:backdrop-blur-md dark:[border:1px_solid_rgba(255,255,255,.1)] dark:[box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] rounded-lg backdrop-blur-md flex flex-col justify-center items-center shadow-lg overflow-y-auto mx-auto my-auto">
         <div className="text-center mb-4">
-          <h5 className="text-3xl font-semibold text-black mb-4">
+          <h5 className="text-3xl font-semibold text-slate-100 mb-4">
             Scrape Professor Reviews
           </h5>
           <div className="flex items-center justify-center space-x-2 mb-4">
             <span>🔍</span>
-            <p className="text-gray-600">
+            <p className="text-gray-500">
               You can find your professor <a href="https://www.ratemyprofessors.com/" className="text-blue-600 underline hover:text-blue-800" target="_blank" rel="noopener noreferrer">here on RateMyProfessors</a>.
             </p>
           </div>
-          <p className="text-gray-600">
+          <p className="text-gray-500">
             Input the URL of the professor to scrape and save reviews.
           </p>
         </div>
@@ -222,7 +226,7 @@ export default function Home() {
             placeholder="Input URL of professor"
             value={urlProf}
             onChange={(e) => setUrlProf(e.target.value)}
-            className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 flex-grow bg-white text-black"
+            className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 flex-grow bg-slate-200 text-black placeholder-gray-700"
           />
           <Button
             onClick={sendURL}
