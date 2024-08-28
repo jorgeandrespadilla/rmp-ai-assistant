@@ -102,7 +102,7 @@ export function SentimentPieChart({ data }: SentimentPieChartProps) {
           data.totalReviews > 0 ? (
             <div className="flex items-center gap-2 font-medium leading-none">
               Predominantly
-              <span className="px-2 py-1 text-white rounded-full" style={{ backgroundColor: sentimentCategoriesConfig[data.predominantCategory as SentimentCategory].color }}>
+              <span className="px-2 py-1 text-white rounded-full border" style={{ borderColor: sentimentCategoriesConfig[data.predominantCategory as SentimentCategory].color }}>
                 {sentimentCategoriesConfig[data.predominantCategory as SentimentCategory].label}
               </span>
             </div>

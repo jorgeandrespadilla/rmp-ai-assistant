@@ -24,7 +24,11 @@ export interface ReviewStatsData {
 }
 
 const formatDate = (date: Date): string => {
-  return date.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    // day: "numeric",
+  })
 }
 
 const getSentimentPieStats = async (professorSlug: string, timeRange: string): Promise<PieChartData> => {
@@ -46,8 +50,10 @@ const getSentimentPieStats = async (professorSlug: string, timeRange: string): P
   let timeRangeLabel = 'All time';
 
   if (timeRange !== 'all') {
-    const startDate = new Date(new Date().getFullYear() - parseInt(timeRange), 0, 1);
+    // Calculate full year range
     const endDate = new Date();
+    const startDate = new Date(endDate.getFullYear() - parseInt(timeRange), endDate.getMonth(), 1); // Start from the same month
+    // const startDate = new Date(endDate.getFullYear() - parseInt(timeRange), 0, 1); // Start from January
 
     groupByArgs.where = {
       ...groupByArgs.where,

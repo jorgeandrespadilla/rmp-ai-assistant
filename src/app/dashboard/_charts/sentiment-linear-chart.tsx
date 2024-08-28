@@ -97,6 +97,7 @@ export function SentimentLinearChart({ data }: SentimentLinearChartProps) {
               tickFormatter={(value) => {
                 const date = new Date(value)
                 return date.toLocaleDateString("en-US", {
+                  
                   month: "short",
                   day: "numeric",
                 })
@@ -108,6 +109,7 @@ export function SentimentLinearChart({ data }: SentimentLinearChartProps) {
                 <ChartTooltipContent
                   labelFormatter={(value) => {
                     return new Date(value).toLocaleDateString("en-US", {
+                      year: "numeric",
                       month: "short",
                       day: "numeric",
                     })
