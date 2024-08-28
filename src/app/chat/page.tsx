@@ -1,11 +1,14 @@
 'use client';
-import { Box, Button, Stack, TextField } from '@mui/material';
+import { Box, Stack, TextField } from '@mui/material';
 import { useState, useRef } from 'react';
 import { HeroWithOrbitingCircles } from "../(components)/Background";
 import { motion, AnimatePresence } from 'framer-motion';
 import ChatNotification from '@/components/ui/notification';
 import { StickyHeader } from "../(components)/Header";
 import toast, { Toaster } from 'react-hot-toast';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { SendIcon } from 'lucide-react';
 
 interface Message {
   role: 'assistant' | 'user';
@@ -25,6 +28,10 @@ export default function Home() {
   const [urlProf, setUrlProf] = useState('');
 
   const sendMessage = async () => {
+    if (!message) {
+      return;
+    }
+
     setMessage('');
     setMessages((prevMessages) => [
       ...prevMessages,
@@ -153,49 +160,23 @@ export default function Home() {
             </AnimatePresence>
           </Stack>
           <Stack direction={'row'} spacing={2}>
-            <TextField
-              label="Message"
-              fullWidth
+            <Input
+              type="text"
+              placeholder='Type a message...'
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              InputProps={{
-                style: {
-                  color: 'white', // Change the text color to white
-                },
-              }}
-              sx={{
-                '& .MuiInputLabel-root': { color: 'gray' },
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: 'gray', // Match the assistant's message border color
-                    borderRadius: '16px', // Match the border radius of ChatNotification
-                  },
-                  '&:hover fieldset': {
-                    borderColor: 'gray', // Match the assistant's message border color
-                  },
-                  '&.Mui-focused fieldset': {
-                    borderColor: '#00C9A7', // Match the assistant's message border color
-                  },
-                  backgroundColor: 'rgba(0, 0, 0, 0.3)', // Semi-transparent background
-                  color: 'white', // Change the text color to white
-                },
-                '& .MuiInputBase-input': {
-                  padding: '10px', // Match the padding of ChatNotification
-                },
+              className="w-full p-2 mt-1 text-white bg-black bg-opacity-30 border border-gray-500 rounded-lg focus:border-[#00C9A7] focus:outline-none"
+              style={{
+                color: 'white', // Change the text color to white
               }}
             />
             <Button
-              variant="contained"
-              sx={{
-                backgroundColor: '#00C9A7', // Match the assistant's message color
-                '&:hover': {
-                  backgroundColor: '#00A68E', // Slightly darker shade on hover
-                },
-                borderRadius: '16px', // Match the border radius of ChatNotification
-              }}
+              title='Send message'
+              className="bg-[#1E90FF] hover:bg-[#1A78DB] text-white font-bold py-4 px-3 rounded-lg"
               onClick={sendMessage}
+              disabled={!message}
             >
-              Send
+              <SendIcon size={20} />
             </Button>
           </Stack>
         </Stack>
@@ -218,19 +199,19 @@ export default function Home() {
         </div>
 
         <div className="flex items-center space-x-4 w-full">
-          <input
+          <Input
             type="text"
             placeholder="Input URL of professor"
             value={urlProf}
             onChange={(e) => setUrlProf(e.target.value)}
             className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 flex-grow bg-white text-black"
           />
-          <button
+          <Button
             onClick={sendURL}
-            className="bg-[#00C9A7] hover:bg-[#00A68E] text-white font-bold py-2 px-4 rounded-lg"
+            className="bg-[#1E90FF] hover:bg-[#1A78DB] text-white font-bold py-2 px-4 rounded-lg"
           >
             Send URL
-          </button>
+          </Button>
         </div>
       </div>
 
