@@ -108,7 +108,7 @@ const cardData: CardDataProps[] = [
         title: "Add Your Professor",
         content:
             "Quickly scrape and analyze your professor's reviews with a simple URL.",
-        image: "images/f2-WebScrapping.jpg",
+        image: "images/f2-WebScraping.jpg",
     },
     {
         id: 4,
