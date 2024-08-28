@@ -31,9 +31,11 @@ const createOrReturnSchool = async (scrapedSchool: SchoolData | null): Promise<P
     create: {
       slug: schoolSlug,
       name: scrapedSchool.name,
+      rmpUrl: scrapedSchool.rmpUrl,
     },
     update: {
       name: scrapedSchool.name,
+      rmpUrl: scrapedSchool.rmpUrl,
     }
   });
 }
@@ -61,6 +63,7 @@ const createOrReturnProfessor = async (scrapedProfessor: ProfessorData): Promise
       data: {
         slug: professorSlug,
         name: scrapedProfessor.name,
+        rmpUrl: scrapedProfessor.rmpUrl,
         school: {
           connect: {
             id: school.id,
@@ -74,6 +77,7 @@ const createOrReturnProfessor = async (scrapedProfessor: ProfessorData): Promise
       data: {
         slug: professorSlug,
         name: scrapedProfessor.name,
+        rmpUrl: scrapedProfessor.rmpUrl,
       }
     });
   }

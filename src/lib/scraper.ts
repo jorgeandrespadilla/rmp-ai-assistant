@@ -8,6 +8,7 @@ export interface SchoolData {
 
 export interface ProfessorData {
   name: string
+  rmpUrl: string
   school: SchoolData | null
 }
 
