@@ -181,6 +181,7 @@ export default function Home() {
               type="text"
               placeholder='Type a message...'
               value={message}
+              onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
               onChange={(e) => setMessage(e.target.value)}
               className="w-full p-2 mt-1 text-white bg-black bg-opacity-30 border border-gray-500 rounded-lg focus:border-[#00C9A7] focus:outline-none"
               style={{
