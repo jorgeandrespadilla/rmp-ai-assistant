@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <main
       ref={containerRef}
-      className=" bg-black h-full w-full overflow-y-auto"
+      className=" bg-background h-full w-full overflow-y-auto"
     >
       <StickyHeader containerRef={containerRef} />
       <HeroWithOrbitingCircles />

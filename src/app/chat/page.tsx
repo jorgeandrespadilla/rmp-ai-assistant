@@ -103,12 +103,12 @@ export default function Home() {
     <main
 
       ref={containerRef}
-      className=" bg-black h-full w-full overflow-y-auto"
+      className=" bg-background h-full w-full overflow-y-auto"
     >
       <Toaster position="top-right" reverseOrder={false} />
       <StickyHeader containerRef={containerRef} />
       <Box
-        width="100vw"
+        width="100%"
         height="100vh"
         display="flex"
         flexDirection="column"
@@ -122,15 +122,17 @@ export default function Home() {
         <Stack
           direction={'column'}
           width="500px"
-          height="500px"
           border="1px solid black"
           p={2}
           spacing={3}
           sx={{
+            minHeight: '580px',
+            maxHeight: '580px',
             backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
             borderRadius: '16px',
             backdropFilter: 'blur(1px)', // Optional: Adds a blur effect to the background
             position: 'absolute',
+            top: '10px',
             zIndex: 1,
           }}
         >
