@@ -6,6 +6,29 @@ import { FeatureSection } from "./(components)/Features";
 import { MarqueeDemo } from "./(components)/Reviews";
 import { StickyHeader } from "./(components)/Header";
 
+const teamMembers = [
+  {
+    name: "Jorge Andres Padilla",
+    image: "/images/member_jorgeandrespadilla.jpeg",
+    githubUsername: "jorgeandrespadilla",
+  },
+  {
+    name: "Gabriela Padilla",
+    image: "/images/member_gabrielapadilla.jpeg",
+    githubUsername: "gabrielapadilla06",
+  },
+  {
+    name: "Jennifer Mena",
+    image: "/images/member_jennifermena.jpeg",
+    githubUsername: "JennMena",
+  },
+  {
+    name: "Guleed Nuh",
+    image: "/images/member_guleednuh.jpeg",
+    githubUsername: "Guleed-N",
+  },
+];
+
 export default function Home() {
   const containerRef = useRef(null);
 
@@ -38,38 +61,25 @@ export default function Home() {
               </h2>
               <div className="mt-6">
                 <ul className="flex flex-wrap items-center justify-center gap-x-10 gap-y-6 md:gap-x-16">
-                  <li className="flex flex-col items-center">
-                    <img
-                      src="/images/member_jorgeandrespadilla.jpeg"
-                      alt="Jorge Andres Padilla"
-                      className="h-24 w-24 rounded-full object-cover"
-                    />
-                    <p className="mt-2 text-center text-sm font-medium text-white">Jorge Andres Padilla</p>
-                  </li>
-                  <li className="flex flex-col items-center">
-                    <img
-                      src="/images/member_gabrielapadilla.jpeg"
-                      alt="Gabriela Padilla"
-                      className="h-24 w-24 rounded-full object-cover"
-                    />
-                    <p className="mt-2 text-center text-sm font-medium text-white">Gabriela Padilla</p>
-                  </li>
-                  <li className="flex flex-col items-center">
-                    <img
-                      src="/images/member_jennifermena.jpeg"
-                      alt="Jennifer Mena"
-                      className="h-24 w-24 rounded-full object-cover"
-                    />
-                    <p className="mt-2 text-center text-sm font-medium text-white">Jennifer Mena</p>
-                  </li>
-                  <li className="flex flex-col items-center">
-                    <img
-                      src="/images/member_guleednuh.jpeg"
-                      alt="Guleed Nuh"
-                      className="h-24 w-24 rounded-full object-cover"
-                    />
-                    <p className="mt-2 text-center text-sm font-medium text-white">Guleed Nuh</p>
-                  </li>
+                  {
+                    teamMembers.map((member) => (
+                      <li key={member.name} className="flex flex-col items-center">
+                        <img
+                          src={member.image}
+                          alt={member.name}
+                          className="w-32 h-32 object-cover rounded-full"
+                        />
+                        <a
+                          href={`https://www.github.com/${member.githubUsername}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-white font-bold mt-2"
+                        >
+                          {member.name}
+                        </a>
+                      </li>
+                    ))
+                  }
                 </ul>
               </div>
               <br />
