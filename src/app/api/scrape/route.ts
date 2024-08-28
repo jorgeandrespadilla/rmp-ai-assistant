@@ -3,12 +3,21 @@ import { AddReviewData, addReviewsToIndex } from '@/lib/vector-store';
 import { v4 as uuid } from 'uuid';
 import prisma from '@/lib/db';
 import { createSlug } from '@/lib/utils';
+import OpenAI from 'openai';
+import { Prisma } from '@prisma/client';
 
 interface PartialDbCatalogData {
   id: number;
   slug: string;
   name: string;
 }
+
+const validSentiments = ['POSITIVE', 'NEGATIVE', 'NEUTRAL'] as const;
+type Sentiment = typeof validSentiments[number];
+
+const sentimentAnalysisPrompt = `
+You are a review sentiment analysis agent that takes in review content and returns the sentiment of the review. Return the sentiment of the review as either ${validSentiments.join(', ')}. Do not include any other information or character in the response, only the sentiment.
+`
 
 const createOrReturnSchool = async (scrapedSchool: SchoolData | null): Promise<PartialDbCatalogData | null> => {
   if (!scrapedSchool) {
@@ -86,6 +95,26 @@ const createOrReturnSubject = async (subjectName: string): Promise<PartialDbCata
   });
 }
 
+const analyzeSentiment = async (reviewContent: string): Promise<Sentiment> => {
+  const openai = new OpenAI();
+  const completion = await openai.chat.completions.create({
+    messages: [
+      { role: 'system', content: sentimentAnalysisPrompt },
+      { role: 'user', content: reviewContent },
+    ],
+    model: 'gpt-4o',
+    stream: false,
+  });
+  const detectedSentiment = completion.choices[0].message.content?.toUpperCase();
+  if (
+    !detectedSentiment || 
+    !validSentiments.includes(detectedSentiment as Sentiment)
+  ) {
+    return 'NEUTRAL';
+  }
+  return detectedSentiment as Sentiment;
+}
+
 export async function POST(req: Request) {
   try {
     const { url } = await req.json();
@@ -101,16 +130,23 @@ export async function POST(req: Request) {
       subjects.map((subjectName) => createOrReturnSubject(subjectName))
     );
 
+    const reviewsWithSentiment = await Promise.all(
+      scrapedResult.reviews.map(async (review) => {
+        const sentiment = await analyzeSentiment(review.content);
+        return {
+          content: review.content,
+          qualityRating: review.qualityRating,
+          difficultyRating: review.difficultyRating,
+          sentiment,
+          publishedAt: review.publishedAt,
+          professorId: professor.id,
+          subjectId: insertedSubjects.find((subject) => subject.name === review.subjectName)!.id,
+        } as Prisma.ReviewCreateManyInput;
+      })
+    );	
+
     const reviews = await prisma.review.createManyAndReturn({
-      data: scrapedResult.reviews.map((review) => ({
-        content: review.content,
-        qualityRating: review.qualityRating,
-        difficultyRating: review.difficultyRating,
-        sentiment: 'NEUTRAL', // TODO: Add sentiment analysis
-        publishedAt: review.publishedAt,
-        professorId: professor.id,
-        subjectId: insertedSubjects.find((subject) => subject.name === review.subjectName)!.id,
-      })),
+      data: reviewsWithSentiment,
     });
 
     const reviewsForIndex = reviews.map(review => {
