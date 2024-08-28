@@ -18,58 +18,34 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 190, fill: "var(--color-other)" },
-]
+import { ReviewStatsData } from "@/app/api/stats/route"
+import { sentimentCategoriesConfig } from "./constants"
+
+type SentimentCategory = keyof typeof sentimentCategoriesConfig
 
 const chartConfig = {
-  visitors: {
-    label: "Visitors",
+  reviews: {
+    label: "Reviews",
   },
-  chrome: {
-    label: "Chrome",
-    color: "hsl(var(--chart-1))",
-  },
-  safari: {
-    label: "Safari",
-    color: "hsl(var(--chart-2))",
-  },
-  firefox: {
-    label: "Firefox",
-    color: "hsl(var(--chart-3))",
-  },
-  edge: {
-    label: "Edge",
-    color: "hsl(var(--chart-4))",
-  },
-  other: {
-    label: "Other",
-    color: "hsl(var(--chart-5))",
-  },
+  ...sentimentCategoriesConfig,
 } satisfies ChartConfig
 
 interface SentimentPieChartProps {
-  professorSlug: string
-  timeRange: string
+  data: ReviewStatsData["pie"]
 }
 
-export function SentimentPieChart({
-  professorSlug,
-  timeRange,
-}: SentimentPieChartProps) {
-  const totalVisitors = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.visitors, 0)
-  }, [])
+export function SentimentPieChart({ data }: SentimentPieChartProps) {
+  const chartData = Object.entries(data.categories).map(([sentiment, reviews]) => ({
+    sentiment,
+    reviews,
+    fill: sentimentCategoriesConfig[sentiment as SentimentCategory].color,
+  }))
 
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
         <CardTitle className="text-center">Sentiment Distribution</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardDescription>{data.timeRangeLabel}</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -83,8 +59,8 @@ export function SentimentPieChart({
             />
             <Pie
               data={chartData}
-              dataKey="visitors"
-              nameKey="browser"
+              dataKey="reviews"
+              nameKey="sentiment"
               innerRadius={60}
               strokeWidth={5}
             >
@@ -103,14 +79,14 @@ export function SentimentPieChart({
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {totalVisitors.toLocaleString()}
+                          {data.totalReviews.toLocaleString()}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          Visitors
+                          Reviews
                         </tspan>
                       </text>
                     )
@@ -122,9 +98,18 @@ export function SentimentPieChart({
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none">
-          Total Reviews: <span className="text-lg font-bold">1,234</span>
-        </div>
+        {
+          data.totalReviews > 0 ? (
+            <div className="flex items-center gap-2 font-medium leading-none">
+              Predominantly
+              <span className="px-2 py-1 text-white rounded-full" style={{ backgroundColor: sentimentCategoriesConfig[data.predominantCategory as SentimentCategory].color }}>
+                {sentimentCategoriesConfig[data.predominantCategory as SentimentCategory].label}
+              </span>
+            </div>
+          ) : (
+            <div className="text-center">No reviews</div>
+          )
+        }
       </CardFooter>
     </Card>
   )
