@@ -116,129 +116,124 @@ export default function Home() {
   };
 
   return (
-    <main
-      ref={containerRef}
-      className=" bg-background h-full w-full overflow-y-auto"
-    >
+    <main ref={containerRef} className="bg-background w-full h-full">
       <Toaster position="top-right" reverseOrder={false} />
       <StickyHeader containerRef={containerRef} />
-      <Box
-        width="100%"
-        height="100vh"
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        sx={{
-          position: 'relative',
-        }}
-      >
-        <HeroWithOrbitingCircles />
-        <Stack
-          direction={'column'}
-          width="500px"
-          border="1px solid black"
-          p={2}
-          spacing={3}
-          sx={{
-            minHeight: '580px',
-            maxHeight: '580px',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
-            borderRadius: '16px',
-            backdropFilter: 'blur(1px)', // Optional: Adds a blur effect to the background
-            position: 'absolute',
-            top: '10px',
-            zIndex: 1,
-          }}
-        >
-          <Stack
-            direction={'column'}
-            spacing={2}
-            flexGrow={1}
-            overflow="auto"
-            maxHeight="90%"
-          >
-            <AnimatePresence>
-              {messages.map((msg, idx) => (
-                <motion.div
-                  key={idx}
-                  initial={{ scale: 0, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1, originY: 0 }}
-                  exit={{ scale: 0, opacity: 0 }}
-                  transition={{ type: "spring", stiffness: 350, damping: 40 }}
-                >
-                  <ChatNotification
-                    description={
-                      msg.role === 'assistant' && !msg.content 
-                        ? 'Thinking...' 
-                        : msg.content 
-                    }
-                    color={msg.role === 'assistant' ? '#00C9A7' : '#FFB800'}
-                    icon={msg.role === 'assistant' ? '🤖' : '👤'}
-                  />
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </Stack>
-          <Stack direction={'row'} spacing={2}>
-            <Input
-              type="text"
-              placeholder='Type a message...'
-              value={message}
-              onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
-              onChange={(e) => setMessage(e.target.value)}
-              className="w-full p-2 mt-1 text-white bg-black bg-opacity-30 border border-gray-500 rounded-lg focus:border-[#00C9A7] focus:outline-none"
-              style={{
-                color: 'white', // Change the text color to white
+      <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" sx={{ position: 'relative' }}>
+        <div className="flex px-4 gap-4">
+          {/* Chat Box Section */}
+          <div className="w-1/2 mr-20 relative">
+            {/* HeroWithOrbitingCircles as the background */}
+            <div className="absolute inset-0">
+              <HeroWithOrbitingCircles />
+            </div>
+            <Stack
+              direction={'column'}
+              width="500px"
+              border="1px solid rgba(255,255,255,.1)"
+              p={2}
+              spacing={3}
+              sx={{
+                minHeight: '580px',
+                maxHeight: '580px',
+                backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background
+                borderRadius: '16px',
+                backdropFilter: 'blur(1px)', // Optional: Adds a blur effect to the background
+                position: 'relative',
+                top: '10px',
+                zIndex: 10, // Ensures chat content stays on top
               }}
-            />
-            <Button
-              title='Send message'
-              className="bg-[#1E90FF] hover:bg-[#1A78DB] text-white font-bold py-4 px-3 rounded-lg"
-              onClick={sendMessage}
-              disabled={!message}
             >
-              <SendIcon size={20} />
-            </Button>
-          </Stack>
-        </Stack>
-      </Box>
-      {/*Section - Input for Web Scraping */}
-      <div className="mb-10 w-1/2 p-6 transform-gpu bg-transparent backdrop-blur-md [border:1px_solid_rgba(255,255,255,.1)] [box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] rounded-lg flex flex-col justify-center items-center shadow-lg overflow-y-auto mx-auto my-auto">
-        <div className="text-center mb-4">
-          <h5 className="text-3xl font-semibold text-slate-100 mb-4">
-            Scrape Professor Reviews
-          </h5>
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <span>🔍</span>
-            <p className="text-gray-500">
-              You can find your professor <a href="https://www.ratemyprofessors.com/" className="text-blue-600 underline hover:text-blue-800" target="_blank" rel="noopener noreferrer">here on RateMyProfessors</a>.
-            </p>
+              <Stack direction={'column'} spacing={2} flexGrow={1} overflow="auto" maxHeight="90%">
+                <AnimatePresence>
+                  {messages.map((msg, idx) => (
+                    <motion.div
+                      key={idx}
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1, originY: 0 }}
+                      exit={{ scale: 0, opacity: 0 }}
+                      transition={{ type: 'spring', stiffness: 350, damping: 40 }}
+                    >
+                      <ChatNotification
+                        description={
+                          msg.role === 'assistant' && !msg.content ? 'Thinking...' : msg.content
+                        }
+                        color={msg.role === 'assistant' ? '#00C9A7' : '#FFB800'}
+                        icon={msg.role === 'assistant' ? '🤖' : '👤'}
+                      />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </Stack>
+              <Stack direction={'row'} spacing={2}>
+                <Input
+                  type="text"
+                  placeholder="Type a message..."
+                  value={message}
+                  onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                  onChange={(e) => setMessage(e.target.value)}
+                  className="w-full p-2 mt-1 text-white bg-black bg-opacity-30 border border-gray-500 rounded-lg focus:border-[#00C9A7] focus:outline-none"
+                  style={{
+                    color: 'white', // Change the text color to white
+                  }}
+                />
+                <Button
+                  title="Send message"
+                  className="bg-[#1E90FF] hover:bg-[#1A78DB] text-white font-bold py-4 px-3 rounded-lg"
+                  onClick={sendMessage}
+                  disabled={!message}
+                >
+                  <SendIcon size={20} />
+                </Button>
+              </Stack>
+            </Stack>
           </div>
-          <p className="text-gray-500">
-            Input the URL of the professor to scrape and save reviews.
-          </p>
+
+          {/* Section - Input for Web Scraping */}
+          <div className="w-1/2 mt-20 mb-20 p-6 transform-gpu bg-transparent backdrop-blur-md [border:1px_solid_rgba(255,255,255,.1)] [box-shadow:0_-20px_80px_-20px_#ffffff1f_inset] rounded-lg flex flex-col justify-center items-center shadow-lg overflow-y-auto mx-auto my-auto">
+            <div className="text-center mb-4">
+              <h5 className="text-3xl font-semibold text-slate-100 mb-4">
+                Scrape Professor Reviews
+              </h5>
+              <div className="flex items-center justify-center space-x-2 mb-4">
+                <span>🔍</span>
+                <p className="text-gray-500">
+                  You can find your professor{' '}
+                  <a
+                    href="https://www.ratemyprofessors.com/"
+                    className="text-blue-600 underline hover:text-blue-800"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    here on RateMyProfessors
+                  </a>
+                  .
+                </p>
+              </div>
+              <p className="text-gray-500">Input the URL of the professor to scrape and save reviews.</p>
+            </div>
+
+            <div className="flex items-center space-x-4 w-full">
+              <Input
+                type="text"
+                placeholder="Input URL of professor"
+                value={urlProf}
+                onChange={(e) => setUrlProf(e.target.value)}
+                className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 flex-grow bg-slate-200 text-black placeholder-gray-700"
+              />
+              <Button
+                onClick={sendURL}
+                className="bg-[#1E90FF] hover:bg-[#1A78DB] text-white font-bold py-2 px-4 rounded-lg"
+                disabled={scraping}
+              >
+                Send URL
+              </Button>
+            </div>
+          </div>
         </div>
-
-        <div className="flex items-center space-x-4 w-full">
-          <Input
-            type="text"
-            placeholder="Input URL of professor"
-            value={urlProf}
-            onChange={(e) => setUrlProf(e.target.value)}
-            className="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 flex-grow bg-slate-200 text-black placeholder-gray-700"
-          />
-          <Button
-            onClick={sendURL}
-            className="bg-[#1E90FF] hover:bg-[#1A78DB] text-white font-bold py-2 px-4 rounded-lg"
-            disabled={scraping}
-          >
-            Send URL
-          </Button>
-        </div>
-      </div>
-
-
+      </Box>
     </main>
+
+
   );
 }

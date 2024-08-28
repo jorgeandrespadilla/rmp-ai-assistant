@@ -91,37 +91,34 @@ type CardDataProps = {
 const cardData: CardDataProps[] = [
     {
         id: 1,
-        title: "Feature 1",
+        title: "Dashboard Analytics",
         content:
-            "text",
-        image:
-            "vercel.svg",
+            "Track professor sentiment trends over time. Add your own reviews easily with a URL.",
+        image: "/images/f3-SentimentEvolutionDashboard.jpg",
     },
     {
         id: 2,
-        title: "Feature 2",
+        title: "Review Insights",
         content:
-            "text",
-        image:
-            "vercel.svg",
+            "Dive deeper into the reviews that power our analytics.",
+        image: "/images/f4-SummaryReviews.jpg",
     },
     {
         id: 3,
-        title: "Feature 3",
+        title: "Add Your Professor",
         content:
-            "text",
-        image:
-            "vercel.svg",
+            "Quickly scrape and analyze your professor's reviews with a simple URL.",
+        image: "images/f2-WebScrapping.jpg",
     },
     {
         id: 4,
-        title: "Feature 4",
+        title: "AI Chatbot",
         content:
-            "text",
-        image:
-            "vercel.svg",
+            "Get instant answers about professors, ratings, and teaching styles.",
+        image: "images/f1-AIChatBot.jpg",
     },
 ];
+
 
 
 type FeatureProps = {
@@ -221,7 +218,7 @@ const Feature = ({
             <div className="py-14">
                 <div className="container flex w-full flex-col items-center justify-center p-4">
                     <div className="mx-auto max-w-5xl text-center">
-                        <h2 className="text-4xl font-bold tracking-tight text-black dark:text-white sm:text-6xl">
+                        <h2 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
                             Features
                         </h2>
                     </div>

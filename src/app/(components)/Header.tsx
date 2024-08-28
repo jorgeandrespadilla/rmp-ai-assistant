@@ -61,7 +61,7 @@ export function StickyHeader({
     return (
         <header ref={stickyNavRef} className="bg-background sticky top-0 z-50 px-10 py-7 xl:px-0">
             <nav className="relative mx-auto flex items-center justify-between max-w-2xl">
-                <div className="font-bold">
+                <div className="font-bold text-white">
                     RateSmart
                 </div>
 
@@ -91,7 +91,7 @@ export function StickyHeader({
                                             key={navItem.id}
                                             className="flex items-center justify-center px-[0.75rem] py-[0.375rem]"
                                         >
-                                            <a href={navItem.link}>{navItem.label}</a>
+                                            <a className=" text-white" href={navItem.link}>{navItem.label}</a>
                                         </li>
                                     ))}
                                     <div className="ml-4">
