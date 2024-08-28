@@ -32,7 +32,7 @@ export default function SignUpPage() {
                 </div>
 
                 <div className="flex w-full h-full items-center justify-center">
-                    <SignUp signInUrl="/sign-in" fallbackRedirectUrl="/dashboard"/>
+                    <SignUp signInUrl="/sign-in" fallbackRedirectUrl="/chat"/>
                 </div>
             </div>
         </div>
