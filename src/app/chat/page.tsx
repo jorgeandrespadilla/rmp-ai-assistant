@@ -27,6 +27,8 @@ export default function Home() {
 
   const [urlProf, setUrlProf] = useState('');
 
+  const [scraping, setScraping] = useState(false);
+
   const sendMessage = async () => {
     if (!message) {
       return;
@@ -75,34 +77,46 @@ export default function Home() {
     await reader.read().then(processText);
   };
 
+  const scrapeURL = async (url: string) => {
+    setScraping(true);
+    const response = await fetch('/api/scrape', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ url }),
+    });
+    setScraping(false);
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.error?.message || 'Failed to scrape URL. Please try again.');
+    }
+  };
+
+
   const sendURL = async () => {
-    if (!urlProf || urlProf == '') {
+    if (!urlProf?.trim()) {
       toast.error('Please enter a valid URL.');
       return;
     }
-    try {
-      const response = await fetch('/api/scrape', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ url: urlProf }),
-      });
-      
-      const data = await response.json();
-      if (response.ok) {
-        toast.success('URL successfully sent and processed!');
-      } else {
-        toast.error(data.error?.message || 'Failed to send URL. Please try again.'); 
+    toast.promise(
+      scrapeURL(urlProf),
+      {
+        loading: 'Scraping URL...',
+        success: "URL scraped successfully!",
+        error: (err: Error) => err.message,
+      },
+      {
+        style: {
+          minWidth: '250px',
+        }
       }
-    } catch (error) {
-      toast.error('An error occurred. Please try again.');
-    }
+    );
   };
 
   return (
     <main
-
       ref={containerRef}
       className=" bg-background h-full w-full overflow-y-auto"
     >
@@ -212,6 +226,7 @@ export default function Home() {
           <Button
             onClick={sendURL}
             className="bg-[#1E90FF] hover:bg-[#1A78DB] text-white font-bold py-2 px-4 rounded-lg"
+            disabled={scraping}
           >
             Send URL
           </Button>
