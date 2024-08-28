@@ -88,11 +88,12 @@ export default function Home() {
         },
         body: JSON.stringify({ url: urlProf }),
       });
-
+      
+      const data = await response.json();
       if (response.ok) {
         toast.success('URL successfully sent and processed!');
       } else {
-        toast.error('Failed to send URL. Please try again.');
+        toast.error(data.error?.message || 'Failed to send URL. Please try again.'); 
       }
     } catch (error) {
       toast.error('An error occurred. Please try again.');
