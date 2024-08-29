@@ -51,12 +51,12 @@ export default function Home() {
       </div>
       <div>
         <section
-          id="clients"
+          id="team"
           className="text-center mx-auto max-w-[80rem] px-6 md:px-8"
         >
           <div className="py-14">
             <div className="mx-auto max-w-screen-xl px-4 md:px-8">
-              <h2 className="text-center text-2xl font-bold     text-white">
+              <h2 className="text-center text-2xl font-bold text-white">
                 MEET OUR TEAM
               </h2>
               <div className="mt-6">
